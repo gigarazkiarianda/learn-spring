@@ -25,11 +25,19 @@ public class UserService {
     }
 
     // Add a new user
-    public User addUser(User user) {
-    return userRepository.save(user); // ID is auto-generated
-}
+    public void addUser(User user) {
+        userRepository.save(user);
+    }
 
-    // Delete user by ID
+    // Update an existing user
+    public void updateUser(Long id, User user) {
+        if (userRepository.existsById(id)) {
+            user.setId(id);  // Ensure the ID remains the same during update
+            userRepository.save(user);
+        }
+    }
+
+    // Delete a user by ID
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

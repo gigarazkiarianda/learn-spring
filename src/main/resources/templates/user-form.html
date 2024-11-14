@@ -1,69 +1,77 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>User Form</title>
-    <!-- Link to Bootstrap CSS for styling -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${user.id == null ? 'Add' : 'Edit'} + ' User'">
+      User Form
+    </title>
+
+    <!-- Add Bootstrap CSS for styling -->
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
-    <style>
-      /* Optional: Add custom styles for form spacing */
-      .container {
-        max-width: 600px;
-        margin-top: 50px;
-      }
-    </style>
   </head>
   <body>
-    <div class="container">
-      <h1
-        class="text-center mb-4"
-        th:text="${user.id == null ? 'Add' : 'Edit'} + ' User'"
-      ></h1>
-      <form th:action="@{/users/add}" th:object="${user}" method="post">
-        <!-- Name field -->
-        <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
+    <div class="container mt-5">
+      <h1 th:text="${user.id == null ? 'Add' : 'Edit'} + ' User'"></h1>
+
+      <form
+        th:action="@{${user.id == null ? '/users/add' : '/users/edit/' + user.id}}"
+        th:object="${user}"
+        method="post"
+      >
+        <!-- Name Field -->
+        <div class="form-group">
+          <label for="name">Name</label>
           <input
             type="text"
-            id="name"
             th:field="*{name}"
             class="form-control"
+            id="name"
             placeholder="Enter name"
             required
           />
+          <div
+            class="invalid-feedback"
+            th:if="${#fields.hasErrors('name')}"
+            th:errors="*{name}"
+          >
+            Name is required
+          </div>
         </div>
 
-        <!-- Email field -->
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">Email</label>
           <input
             type="email"
-            id="email"
             th:field="*{email}"
             class="form-control"
+            id="email"
             placeholder="Enter email"
             required
           />
+          <div
+            class="invalid-feedback"
+            th:if="${#fields.hasErrors('email')}"
+            th:errors="*{email}"
+          >
+            Invalid email address
+          </div>
         </div>
 
-        <!-- Submit button -->
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary">
-            <span
-              th:text="${user.id == null ? 'Add' : 'Update'} + ' User'"
-            ></span>
-          </button>
-        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-      <!-- Back to User List button (optional) -->
-      <div class="text-center mt-3">
-        <a href="/users" class="btn btn-secondary">Back to User List</a>
-      </div>
+
+      <!-- Back to Users List Link -->
+      <a href="/users" class="btn btn-link mt-3">Back to List</a>
     </div>
 
-    <!-- Include Bootstrap JS for any interactive components -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Add Bootstrap JS for responsiveness -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
